@@ -1,7 +1,7 @@
 #include "abs_min.h"
 int abs_min(int array[], int size)
 {
-    int i;
+    int i=0;
     int min = array[0];
     for (int i = 0; i < size; i++)
     {
