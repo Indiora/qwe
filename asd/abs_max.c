@@ -2,7 +2,8 @@
 int abs_max(int array[], int size)
 {
     int max = array[0];
-    for (int i=0; i < size; i++)
+    int i=0;
+    for (i=0; i < size; i++)
     {
         if (abs(array[i]) > abs(max))
         {
