@@ -7,8 +7,9 @@
 
 int abs_max(int array[], int size)
 {
+    int i=0;
     int max = array[0];
-    for (int i = 0; i < size; i++)
+    for (int i; i < size; i++)
     {
         if (abs(array[i]) > abs(max))
         {
@@ -21,8 +22,9 @@ int abs_max(int array[], int size)
 
 int abs_min(int array[], int size)
 {
+    int i=0;
     int min = array[0];
-    for (int i = 0; i < size; i++)
+    for (int i; i < size; i++)
     {
         if (abs(array[i]) < abs(min))
         {
@@ -41,9 +43,10 @@ int diff(int array[], int size)
 
 int sum(int array[], int size)
 {
+    int i=0;
     int sum = 0;
     int flag = 0;
-    for (int i = 0; i < size; i++)
+    for (int i; i < size; i++)
     {
         if ((flag == 1) || (array[i] == abs_max(array,size)))
         {
