@@ -2,7 +2,7 @@
 int abs_min(int array[], int size)
 {
     int min = array[0];
-    for (int i; i < size; i++)
+    for (int i=0; i < size; i++)
     {
         if (abs(array[i]) < abs(min))
         {
