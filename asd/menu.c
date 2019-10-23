@@ -30,7 +30,7 @@ int main()
     break;
     case 3: printf("%d", sum(array, size));
     break;
-    default: printf("Äàííûå íåêîððåêòíû");
+    default: printf("Данные некорректны");
     }
 return 0;
 }
