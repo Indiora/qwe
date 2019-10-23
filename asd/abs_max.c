@@ -1,9 +1,8 @@
 #include "abs_max.h"
 int abs_max(int array[], int size)
 {
-    int i;
     int max = array[0];
-    for (i=0; i < size; i++)
+    for (int i=0; i < size; i++)
     {
         if (abs(array[i]) > abs(max))
         {
