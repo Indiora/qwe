@@ -1,3 +1,2 @@
-#ifndef MAX_H
-#define MAX_H
-#endif
+#pragma once
+int abs_max(int array[], int size);
