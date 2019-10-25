@@ -1,3 +1,2 @@
-#ifndef MIN_H
-#define MIN_H
-#endif
+#pragma once
+int abs_min(int array[], int size);
