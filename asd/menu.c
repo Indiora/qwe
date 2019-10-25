@@ -5,9 +5,9 @@
 #include "sum.h"
 int main()
 {
-int arr[100]; //массив чисел
-int i = 0; //счетчик для заполнения массива
-char b; //считываемый символ
+int arr[100]; 
+int i = 0; 
+char b; 
 int val;
 int count = 0;
 scanf("%d", &val);
