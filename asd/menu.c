@@ -1,36 +1,35 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "abs_max.h"
 #include "abs_min.h"
 #include "diff.h"
 #include "sum.h"
-
 int main()
 {
-    int array[100];
-    int i = 0;
-    int menu;
-    int size = 0;
-    char flag;
-    scanf("%d", &menu);
-    while (flag != '\n')
-    {
-        scanf("%d%c", &array[i], &flag);
-        i++;
-    }
-    size = i;
+int arr[100]; //массив чисел
+int i = 0; //счетчик для заполнения массива
+char b; //считываемый символ
+int val;
+int count = 0;
+scanf("%d", &val);
+while (b != '\n')
+{
+scanf("%d%c", &arr[i], &b);
+i++;
+count++;
+}
 
-    switch(menu)
-    {
-    case 0: printf("%d", abs_max(array, size));
-    break;
-    case 1: printf("%d", abs_min(array, size));
-    break;
-    case 2: printf("%d", diff(array, size));
-    break;
-    case 3: printf("%d", sum(array, size));
-    break;
-    default: printf("Данные некорректны");
-    }
+switch(val)
+{
+case 0: printf("%d\n", abs_max(arr, count));
+break;
+case 1: printf("%d\n", abs_min(arr, count));
+break;
+case 2: printf("%d\n", diff(arr, count));
+break;
+case 3: printf("%d\n", sum(arr, count));
+break;
+default: printf("%s\n", "Данные некорректны");
+
+}
 return 0;
 }
