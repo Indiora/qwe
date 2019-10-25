@@ -1,6 +1,6 @@
-all: menu
 
-menu: menu.c abs_max.o abs_min.o diff.o sum.o
+
+all: menu.c abs_max.o abs_min.o diff.o sum.o
 	gcc menu.c abs_max.o abs_min.o diff.o sum.o -o menu
 abs_max.o: abs_max.c
 	gcc -c  abs_max.c -o abs_max.o
