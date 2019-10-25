@@ -5,7 +5,7 @@ int sum(int array[], int count)
 int sum = 0;
 int c = 0;
 int i = 0
-for (int i; i < count; i++)
+for (i; i < count; i++)
 {
 if ((c == 1) || (array[i] == abs_max(array,count)))
 {
