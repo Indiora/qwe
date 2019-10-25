@@ -4,7 +4,7 @@ int abs_max(int array[], int count)
 {
 int max = array[0];
 int i = 0;
-for (int i; i < count; i++)
+for (i; i < count; i++)
 {
 if (abs(array[i]) > abs(max))
 {
