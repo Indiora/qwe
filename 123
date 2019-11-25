@@ -5,18 +5,16 @@
 #define DRAGON "Dragon flew away!"
 
 int allsent = 0;
-
-int delNum(char **text)
+void delete(char **text)
 {
 	int delete_sentence = 0 ;
 	for (int i = 0 ; i< allsent; i++)
 	{
 		if(text[i][strlen(text[i])-1] =='?')
 	    {
-				delete_sentence++;
-				free(text[i]);
-				for(int k = i ; k < allsent-1 ; k++)
-					text[k] = text[k+1];
+			free(text[i]);
+			for(int k = i ; k < allsent-1 ; k++)
+				text[k] = text[k+1];
 				i--;	
 				
 		}
@@ -63,6 +61,7 @@ char **text(){
 
 int main(){
     char** textinput  = text();
+    textinput = delete(textinput);
     int o = 0;
     int count = 0;
     while(strcmp((textinput[count]), DRAGON)){
