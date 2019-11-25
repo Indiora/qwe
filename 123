@@ -1,0 +1,78 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define SENT 100
+#define DRAGON "Dragon flew away!"
+
+int allsent = 0;
+
+int delNum(char **text)
+{
+	int delete_sentence = 0 ;
+	for (int i = 0 ; i< allsent; i++)
+	{
+		if(text[i][strlen(text[i])-1] =='?')
+	    {
+				delete_sentence++;
+				free(text[i]);
+				for(int k = i ; k < allsent-1 ; k++)
+					text[k] = text[k+1];
+				i--;	
+				
+		}
+	}
+}
+
+char* sentence(){
+    int size = SENT;
+    char* buf = (char*)malloc(size * sizeof(char));
+    char c = 0;
+    int n = 0;
+    int flag = 1;
+
+        do {
+            c = getchar();
+            if (((flag == 1) && (c == ' ')) || ((flag == 1) && (c == '\t'))){
+                continue;
+            }
+            flag = 0;
+            buf[n] = c;
+            n++;
+            if(n == size - 2){
+                size+=SENT;
+                buf = (char*)realloc(buf, size * sizeof(char));
+            }
+        } while(!strchr("!?;.", c));
+    buf[n] = '\0';
+
+    return buf;
+}
+
+char **text(){
+    char** buf = malloc(sizeof(char*));
+    int n = 0;
+    do
+    {
+        buf[n] = sentence();
+        allsent++;
+        buf = realloc(buf, (n+2) * sizeof(char*));
+        n++;
+    }while(strcmp(buf[n-1], DRAGON));
+    return buf;
+}
+
+int main(){
+    char** textinput  = text();
+    int o = 0;
+    int count = 0;
+    while(strcmp((textinput[count]), DRAGON)){
+        count++;
+    }
+     for(o = 0; o <= count; o++){
+        printf("%s\n", textinput[o]);
+        free(textinput[o]);
+    }
+    printf("Количество предложений до %d и количество предложений после %d \n", (allsent - 1), count);
+    free(textinput);
+    return 0;
+}
