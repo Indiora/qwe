@@ -39,7 +39,7 @@ int text(char*** buf){
         n++;
         if(n == (size - 2)){
             size += INIT;
-            wrong = realloc(buf, size * sizeof(char*));
+            wrong = (char**)realloc(buf, size * sizeof(char*));
             if(!wrong){
                 //return 0;
             }
