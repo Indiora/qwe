@@ -1,0 +1,62 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define SENT 100
+#define INIT 10
+ 
+char* sentence(){
+    int size = SENT;
+    char* wrong;
+    char* buf = (char*)malloc(size * sizeof(char));
+    char c = 0;
+    int n = 0;
+        do {
+            c = getchar();
+            buf[n] = c;
+            n++;
+            if(n == (size - 2)){
+                size += SENT;
+                wrong = (char*)realloc(buf, size * sizeof(char));
+                if(!wrong){
+                    return 0;
+                }
+                buf = wrong;
+            }
+        } while(!strchr(".\n", c));
+    buf[n] = '\0';
+ 
+    return buf;
+}
+ 
+int text(char*** buf){
+    int size = INIT;
+    char** wrong;
+    (*buf) = (char**)malloc(size * sizeof(char*));
+    int n = 0;
+    do
+    {
+        (*buf)[n] = sentence();
+        n++;
+        if(n == (size - 2)){
+            size += INIT;
+            wrong = realloc(buf, size * sizeof(char*));
+            if(!wrong){
+                //return 0;
+            }
+            (*buf) = wrong;
+        }
+    }while(((*buf)[n-1][0]) != '\n');
+    return (n-1);
+}
+ 
+int main(){
+    int count = 0;
+    int i = 0;
+    char** ts;
+    count = text(&ts);
+        printf("%d\n", count);
+        for(i = 0; i < count; i++)
+            printf("%s\n", ts[i]);
+ 
+return 0;
+}
