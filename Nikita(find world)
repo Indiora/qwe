@@ -1,0 +1,44 @@
+char* readstr(){
+    char c;
+    char* str = (char*)malloc(sizeof(char));
+    int currentchar = 0;
+    while((c = getchar()) != '\n'){
+        str[currentchar] = c;
+        currentchar++;
+        str = (char*)realloc(str, (currentchar + 1) * sizeof(char));
+    }
+    str[currentchar] = '\0';
+    return str;
+}
+
+
+
+void nikita(char*** ts, int count, char* unik){
+    int i = 0;
+    int j = 0;
+    int del = 0;
+    int countunik = 0;
+    char** wordsarr;
+    int parts;
+    for(i = 0; i < count; i++){
+        parts = 0;
+        wordsarr = making_words((*ts)[i], &parts);
+        for (j = 0; j < parts; j++){
+            if(!strcmp(wordsarr[j], unik)){
+                countunik++;
+            }
+        }
+        for(del = 0; del < parts; del++){
+            free(wordsarr[del]);
+        }
+        free(wordsarr);
+    }
+    printf("      %d        ", countunik);
+}
+
+            str = readstr();
+
+
+            case 5:
+                    nikita(&ts, count, str);
+                    break;
