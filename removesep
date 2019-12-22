@@ -1,0 +1,13 @@
+void removesep(char ***ts, int count){
+	for (int i = 0; i < count; ++i){
+		int Separator = 0;
+		for (int j = 0; j < strlen((*ts)[i]); ++j){
+			if (((*ts)[i][j] == ' ') && ((*ts)[i][j+1] == ' ')){
+				for (int k = j; k < strlen((*ts)[i]); ++k){
+					(*ts)[i][k] = (*ts)[i][k + 1];
+				}
+
+			}
+		}
+	}
+}
