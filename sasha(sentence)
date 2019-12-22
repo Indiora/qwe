@@ -40,3 +40,8 @@ int countsasha(char*** ts, char** copyts, int count){
     }
     return countodinak;
 }
+
+    char** copyts = malloc(count * sizeof(char*));
+    for (int c = 0; c < count; c++){
+        copyts[c] = strdup(ts[c]);
+    }
