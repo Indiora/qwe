@@ -1,0 +1,64 @@
+int Ksycomp(const void* x1, const void* y1){
+    char* x = *(char**)x1;
+    char* y = *(char**)y1;
+    char* num1 = malloc(200 * sizeof(char));
+    char* num2 = malloc(200 * sizeof(char));
+    int i;
+    int d;
+    int n = 0;
+    int flag = 0;
+    int flag2 = 0;
+    unsigned int sum1 = 0;
+    unsigned int sum2 = 0;
+    for(d = 0; d < 100; d++){
+                num1[d] = ' ';
+            }
+    for(d = 0; d < 100; d++){
+                num2[d] = ' ';
+            }
+    for(i = 0; i < strlen(x); i++){
+        if(isdigit(x[i])){
+            flag = 1;
+        }
+        if(flag){
+            num1[n] = x[i];
+            n++;
+            flag = 0;
+
+            }
+        else{
+            sum1 = sum1 + atoi(num1);
+            for(d = 0; d < 100; d++){
+                num1[d] = ' ';
+            }
+        }
+    }
+
+    for(i = 0; i < strlen(y); i++){
+        if(isdigit(y[i])){
+            flag2 = 1;
+        }
+        if(flag2){
+            num2[n] = y[i];
+            n++;
+            flag2 = 0;
+            }
+        else{
+            sum2 = sum2 + atoi(num2);
+            for(d = 0; d < 100; d++){
+                num2[d] = ' ';
+            }
+        }
+    }
+    free(num1);
+    free(num2);
+
+    if ( sum1 <  sum2 ) return -1;
+    if ( sum1 == sum2 ) return 0;
+    if ( sum1 >  sum2 ) return 1;
+
+}
+
+void ksy(char*** ts, int count){
+    qsort((*ts), count, sizeof(char*), Ksycomp);
+}
