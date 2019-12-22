@@ -1,0 +1,63 @@
+char** makewords(char* text, int* par) {
+    char *word;
+    char **words;
+    int Wordscount = 0;
+    words = malloc(sizeof(char*));
+    word = strtok(text, " ,.");
+    while (word != NULL) {
+        words[Wordscount] = word;
+        Wordscount++;
+        words = (char **)realloc(words, ((Wordscount + 1) * sizeof(char *)));
+        word = strtok(NULL, " ,.");
+    }
+    *par = Wordscount;
+    return words;
+}
+
+int sashacomp(const void* x1, const void* y1){
+    char* x = *(char**)x1;
+    char* y = *(char**)y1;
+    int digitcount1 = 0;
+    int digitcount2 = 0;
+    int alphacount1 = 0;
+    int alphacount2 = 0;
+    for(int i = 0; i < strlen(x); i++){
+        if(isdigit(x[i])){
+            digitcount1++;
+        }
+        if(isalpha(x[i])){
+            alphacount1++;
+        }
+    }
+    for(int j = 0; j < strlen(y); j++){
+        if(isdigit(y[j])){
+            digitcount2++;
+        }
+        if(isalpha(y[j])){
+            alphacount2++;
+        }
+    }
+
+    if ( (alphacount1 - digitcount1) <  (alphacount2 - digitcount2) ) return -1;
+    if ( (alphacount1 - digitcount1) == (alphacount2 - digitcount2) ) return 0;
+    if ( (alphacount1 - digitcount1) >  (alphacount2 - digitcount2) ) return 1;
+}
+
+void sasha2(char*** ts, int count){
+    int par = 0;
+    int countof = 0;
+    char** temp;
+    for(int i = 0; i < count; i++){
+       temp = makewords((*ts)[i], &par);
+
+       qsort(temp, par, sizeof(char*), sashacomp);
+        for(int j = 0; j < par; j++){
+           printf("%s\n", temp[j]);
+       }
+       while(temp, par, sizeof(char*), sashacomp){
+          countof++;
+       }
+       par = 0;
+    }
+    printf("%d", countof);
+}
