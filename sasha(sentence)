@@ -1,0 +1,42 @@
+int sashacomp(const void* x1, const void* y1){
+    char* x = *(char**)x1;
+    char* y = *(char**)y1;
+    int digitcount1 = 0;
+    int digitcount2 = 0;
+    int alphacount1 = 0;
+    int alphacount2 = 0;
+    for(int i = 0; i < strlen(x); i++){
+        if(isdigit(x[i])){
+            digitcount1++;
+        }
+        if(isalpha(x[i])){
+            alphacount1++;
+        }
+    }
+    for(int j = 0; j < strlen(y); j++){
+        if(isdigit(y[j])){
+            digitcount2++;
+        }
+        if(isalpha(y[j])){
+            alphacount2++;
+        }
+    }
+
+    if ( (alphacount1 - digitcount1) <  (alphacount2 - digitcount2) ) return -1;
+    if ( (alphacount1 - digitcount1) == (alphacount2 - digitcount2) ) return 0;
+    if ( (alphacount1 - digitcount1) >  (alphacount2 - digitcount2) ) return 1;
+}
+
+void sasha(char*** ts, int count){
+    qsort((*ts), count, sizeof(char*), sashacomp);
+}
+
+int countsasha(char*** ts, char** copyts, int count){
+    int countodinak = 0;
+    for(int i = 0; i < count; i++){
+        if(!strcmp((*ts)[i], copyts[i])){
+            countodinak++;
+        }
+    }
+    return countodinak;
+}
