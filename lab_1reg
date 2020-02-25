@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <regex.h>
+#include <string.h>
+#define END  "Fin."
+
+int main(){
+    char * regex = "([[a-z]]+:[/]{2})?(www\\.)?([[:alnum:]\\.]+\\.[[:alnum:]]+)[[:alnum:]\\/]*\\/([[:alnum:]]+\\.[[:alnum:]]+)[[:graph:]]?";
+    size_t maxGroup = 5;
+    char string[100];
+    regex_t Regcompile;
+    regmatch_t Groups[maxGroup];
+    if (regcomp(&Regcompile, regex, REG_EXTENDED)!=0){
+        printf("Something went wrong\n");
+    }
+    do{
+        fgets(string, 100, stdin);
+	    if (!regexec(&Regcompile, string, maxGroup, Groups, 0)){
+    		for (int j = Groups[3].rm_so; j<Groups[3].rm_eo;j++)
+				printf("%c", string[j]);
+			printf(" - ");
+
+			for (int j = Groups[4].rm_so; j<Groups[4].rm_eo;j++)
+				printf("%c", string[j]);
+			printf("\n");
+	        
+	    }
+    }while(strcmp(string, END)!=0);
+    return 0;
+}
