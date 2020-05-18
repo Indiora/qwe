@@ -1,0 +1,15 @@
+//FINISH
+int flagex = 1;
+int randNumex  = (rand()%(width - 1));
+if(maze[height - 2][randNumex] == 1){
+	maze[height - 2][randNumex+1] = 4;
+}
+else
+	maze[height - 2][randNumex] = 4;
+
+while(flagex){
+	if(maze[height - 2][randNumex] == 0)
+		randNumex = randNumex - 1;
+	else 
+		flagex = 0;
+}
