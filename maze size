@@ -1,0 +1,12 @@
+printf("Сhoose the size of the maze\n");
+scanf("%d%d",&width, &height);
+
+while(flagchoose){
+	if(((width >= 35) && (width <= 137) && (width%2 == 0)) && ((height >= 23) && (height <= 35) && (height%2 == 0))){
+		printf("Wrong width or height\n");
+		printf("Сhoose the size of the maze again\n");
+		scanf("%d%d",&width, &height);
+	}
+	else 
+		flagchoose = 0;
+}
