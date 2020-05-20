@@ -1,0 +1,386 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <termios.h>
+
+
+#define WALL 1
+#define CELL 0
+
+
+static struct termios old, currentter;
+
+
+// Initialize new terminal settings
+void initTermios(){
+  tcgetattr(0, &old); // grab old terminal i/o settings 
+  currentter = old; // make new settings same as old settings tcflag_t c_lflag; 
+  currentter.c_lflag &= ~ICANON; // disable buffered
+  tcsetattr(0, TCSANOW, &currentter); // use these new terminal settings now TCSANOW - the change occurs immediately. 
+}
+
+
+//Custom getch()
+char getch(){
+  char ch;
+  initTermios();
+  ch = getchar();
+  tcsetattr(0, TCSANOW, &old);// Restore old terminal settings
+  return ch;
+}
+
+
+struct cell{
+    int x;
+    int y;
+};
+
+
+
+//Reward Generation
+void reward(){
+    int rew = 1;
+    rew  = (1 + rand()%7);
+    if(rew == 1){
+        printf("\t\t\t\t YOU WIN SAD WALL !!!\n\t\t\t     (PRESS 8 WHEN CHOOSE WALL)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 2){
+        printf("\t\t\t\t YOU WIN WALL OF INTEREST !!!\n\t\t\t     (PRESS 6 WHEN CHOOSE WALL)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 3){
+        printf("\t\t\t\t YOU WIN ONE DOLLAR !!!\n\t\t\t     (PRESS  8 WHEN CHOOSE PLAYER)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 4){
+        printf("\t\t\t\t YOU TIE-FIGHTER MAN !!!\n\t\t\t     (PRESS 5 WHEN CHOOSE PLAYER)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 5){
+        printf("\t\t\t\t YOU WIN PLUS !!!\n\t\t\t     (PRESS 7 WHEN CHOOSE PLAYER)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 6){
+        printf("\t\t\t\t YOU WIN CIRCUMFLEX !!!\n\t\t\t     (PRESS 9 WHEN CHOOSE PLAYER)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    if(rew == 7){
+        printf("\t\t\t\t YOU WIN BACKSLASH WALL!!!\n\t\t\t     (PRESS 9 WHEN CHOOSE WALL)\n\n\n\n\n\n\n\n\n\n\n");
+    }
+}
+
+
+//Function for help
+void heeelp(){
+    printf("Hey User !!!\nI was called to tell you a little bit about this game.\nYou have to pass the maze. If you crash into a wall you will die.\nFor each successful pass you will receive a reward.\nThere are 7 secret rewards in total try to open them all.\nTo control your character use: a w s d.\nNow you have to choose: size, complexity and skins.If you do not want to select press any button.\nGood luck !!!\n\n");
+}
+
+//Game managment
+int Game(int coord, int gamestatus){
+    if(coord == 1){
+        system("clear");
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t     Game Over!\n\n\n\n\n\n\n\n\n\n\n");
+        gamestatus = 0;
+        return gamestatus;
+    }
+    if(coord == 4){
+        system("clear");
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t     Victory!\n");
+        gamestatus = 0;
+	reward();
+        return gamestatus;
+    }
+    return 1;
+}
+
+
+int main(){
+
+//Variable for manage
+int gamestatus = 1;
+
+//Variables for cycle
+int i = 0;	
+int j = 0;
+
+//Size
+int height;
+int width;
+
+//Coordinate
+int x = 1;
+int y = 1;
+int coor1 = 1;
+int coor2 = 1;
+struct cell curent = {1, 1};
+struct cell rt = {2, 1};
+
+//Variable for control
+char keysArrow;
+
+//Variables for generate maze
+int whdig = 0;
+int randNum;
+
+//Variables for skins
+char complexitychoose = '1';
+char wallchoose = '1';
+char playerchoose = '1';
+char sizechoose = '1';
+char help = '1';
+char wall = 'O'; 
+char cell = ' ';
+char player = '!';
+char finish = '*';
+int complexity = 0;
+
+srand(time(NULL));
+system("clear");
+
+//Help managment
+printf("\033[1;35mDo you need help ?\033[0m\n\n");
+printf("Yes - 1\n\n");
+printf("No - 2\n\n");
+help = getch();
+system("clear");
+switch(help){
+                case '1':
+		    heeelp();
+                    break;
+                case '2':
+                    printf("As you wish.\n\n");
+                    break;
+                default:
+                    heeelp();
+                    break;
+            }
+
+//Size choose
+printf("\033[1;35mСhoose size of the maze:\033[0m\n\n");
+printf("Small, press 1\n\n");
+printf("Medium, press 2\n\n");
+printf("Huge, press 3 (if you have a large screen size)\n\n");
+sizechoose = getch();
+system("clear");
+switch(sizechoose){
+                case '1':
+                    height = 23;
+		    width = 37;
+                    break;
+		case '2':
+                    height = 29;
+		    width = 51;
+                    break;
+                case '3':
+                    height = 35;
+		    width = 137;
+                    break;
+                default:
+                    height = 23;
+		    width = 35;
+                    break;
+            }
+
+//Generate the initial grid
+int maze[height][width];
+for(i = 0; i < height; i++){
+    for(j = 0; j < width; j++){
+        if((i % 2 != 0  && j % 2 != 0 && i < height-1 && j < width-1)){
+            maze[i][j] = CELL;
+        }
+        else
+            maze[i][j] = WALL;
+    }
+}
+
+//Сomplexity Choose
+printf("\033[1;35mChoose complexity:\033[0m\n\n");
+printf("Make as many mistakes as you want, press 1 \n\n");
+printf("No margin for error, press 2 \n\n");
+complexitychoose = getch();
+system("clear");
+switch(complexitychoose){
+                case '1':
+                    complexity = 0;
+                    break;
+                case '2':
+                    complexity = 1;
+                    break;
+                default:
+                    complexity = 0;
+                    break;
+            }
+
+//Player choose
+printf("\033[1;35mChoose your player:\033[0m\n\n");
+printf("**** - 1 Snowflake\n\n");
+printf("!!!! - 2 Exclamation point\n\n");
+printf("---- - 3 Snake\n\n");
+printf("xxxx - 4 X-wing\n\n");
+playerchoose = getch();
+system("clear");
+
+switch(playerchoose){
+                case '1':
+                    player = '*';
+                    break;
+                case '2':
+                    player = '!';
+                    break;
+                case '3':
+                    player = '-';
+                    break;
+	        case '4':
+                    player = 'x';
+                    break;
+		case '5':
+                    player = 'z';
+                    break; 
+	        case '7':
+                    player = '+';
+                    break;
+	        case '8':
+                    player = '$';
+                    break;
+		case '9':
+                    player = '^';
+                    break;
+                default:
+                    player = '*';
+                    break;
+            }
+
+//Wall choose
+printf("\033[1;35mChoose the wall pls:\033[0m\n\n");
+printf("##### - 1 Grid Wall\n\n");
+printf("OOOO - 2 Ooooooo\n\n");
+printf("==== - 3 Flat wall\n\n");
+printf("&&&& - 4 Braided wall\n\n");
+wallchoose = getch();
+system("clear");
+
+switch(wallchoose){
+                case '1':
+                    wall = '#';
+                    break;
+                case '2':
+                    wall = 'O';
+                    break;
+                case '3':
+                    wall = '=';
+                    break;
+                case '4':
+                    wall = '&';
+                    break;
+                case '6':
+                    wall = '%';
+                    break;
+		case '8':
+                    wall = '(';
+                    break;
+		case '9':
+                    wall = '/';
+                    break;
+                default:
+                    wall = 'O';
+                    break;
+            }
+
+//Maze generation
+    for(i = 0; i < ((height-1)/2); i++){
+        for(j = 0; j < ((width-1)/2)-1; j++){
+		if((i != 0)){
+		    whdig = whdig + 1;
+		}
+                if((rt.x != width)){
+                    whdig = whdig + 1;
+                }
+                if(whdig == 1){
+                        randNum  = 1;
+                }
+                else{
+                    randNum  = (1 + rand()%2);
+                }
+                if(randNum == 1){
+                    curent.x = curent.x + 2;
+                    maze[curent.y][curent.x - 1] = 0;
+                    rt.x = rt.x + 2;
+                }
+                else{
+                    maze[curent.y - 1][curent.x] = 0;
+                    curent.x = curent.x + 2;
+                }
+                whdig = 0;
+        }
+        if(i != ((height-1)/2)-1){
+            maze[curent.y + 1][width-2] = 0;
+        }
+        curent.y = (curent.y + 2);
+        curent.x = 1;
+        rt.x = 2;
+        rt.y = (rt.y + 2);
+    }
+
+
+
+//Player starting position
+maze[coor1][coor2] = 2;
+
+
+//Finish
+if(maze[height - 2][(width/2)] == 1)
+	maze[height - 2][((width/2)-1)] = 4;
+else
+	maze[height - 2][(width/2)] = 4;
+
+
+//Motion drawing
+do{
+
+//Maze drawing
+system("clear");
+for(i = 0; i < height; i++){
+    for(j = 0; j < width; j++){
+            if(maze[i][j] == 1){
+                printf("\033[1;30m%c\033[0m", wall);
+            }
+            if(maze[i][j] == 0){
+                printf("%c", cell);
+            }
+            if(maze[i][j] == 2){
+                printf("\033[1;31m%c\033[0m", player);
+            }
+            if(maze[i][j] == 4){
+                printf("\033[1;35m%c\033[0m", finish);
+            }
+    }
+    printf("\n");
+}
+
+//Character management
+keysArrow =  getch();
+
+  if(keysArrow == 'w' || keysArrow == 'A'){//Up
+     maze[coor1][coor2] = complexity;
+     coor1--;
+     gamestatus = Game(maze[coor1][coor2], gamestatus);
+     maze[coor1][coor2] = 2;
+  }
+  if(keysArrow == 's' || keysArrow == 'B'){//Down
+     maze[coor1][coor2] = complexity;
+     coor1++;
+     gamestatus = Game(maze[coor1][coor2], gamestatus);
+     maze[coor1][coor2] = 2;
+  }
+  if(keysArrow == 'd' || keysArrow == 'C'){//Right
+     maze[coor1][coor2] = complexity;
+     coor2++;
+     gamestatus = Game(maze[coor1][coor2], gamestatus);
+     maze[coor1][coor2] = 2;
+  }
+  if(keysArrow == 'a' || keysArrow == 'D'){//Left
+     maze[coor1][coor2] = complexity;
+     coor2--;
+     gamestatus = Game(maze[coor1][coor2], gamestatus);
+     maze[coor1][coor2] = 2;
+  }
+}while(gamestatus);
+
+    return 0;
+}
