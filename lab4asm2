@@ -1,0 +1,119 @@
+#include <iostream>
+#include <stdio.h>
+
+#define N 80
+using namespace std;
+
+int main()
+{
+	system("chcp 1251 > nul");
+	char _str[N + 1];
+	cout << "Савельев И.С 9382\nЛабораторная работа номер 4\nЗаменить введенные во входной строке русские буквы на десятичные числа, соответствующие их номеру по алфавиту, остальные символы входной строки передать в выходную строку непосредственно\n";
+	char str_out[N * 2 + 1];
+	int i = 0;
+	cin.getline(_str, N);
+	_asm {
+			sub eax, eax	;
+			mov al, 0		;		in al code of str ending symbol
+			mov ecx, N		;	ecx = N для цикла
+			lea edi, _str	;	edi now points at start of _str
+			repne scas		; 	ecx now contains N - str.length
+			sub ecx, N		; 	ecx = -str.length
+			neg ecx			;		ecx = str.length
+			mov edx, ecx	;    edx = ecx
+			sub edi, edi	; 	edi == 0
+			sub esi, esi	;    esi == 0
+
+			traverse:
+			mov edi, edx	;	edi = edx
+			sub edi, ecx	;	edi - points at last element in str, when we subtracting ecx we pointing to currentIdx, as ecx decreasing every iteration
+
+			mov al, _str[edi];	al contains currentElement
+
+			cmp al, 'Ё'		; Если Ё
+			je isYo			
+
+			cmp al, 'ё'		; Если ё
+			je isYo;
+
+			cmp al, 'А'		; Если < А не буква
+			jl writeSymbol;
+
+			cmp al, 'я'		; Если > я не буква
+			jg writeSymbol;
+			
+							; в [A, я]
+			
+			cmp al, 'а'		; Если в [a, я]
+			jge aSmalltoYaSmall
+
+							; попали сюда значит в [A, Я]
+			cmp al, 'Е'		
+			jle beforeYo	; перед Ё
+
+			inc al			; после Ё
+
+			beforeYo :		; в [А, Е]
+			sub al, 'А'		
+			inc al			
+			jmp firstNumber
+
+			aSmalltoYaSmall : 
+			cmp al, 'е'			; перед ё
+			jle beforeYoSmall 
+
+			inc al				; после ё
+
+			beforeYoSmall :		; в [а, е]
+			sub al, 'а'		
+			inc al
+
+			jmp firstNumber
+
+			isYo :
+			mov al, 7
+
+			firstNumber :
+			cmp al, 29
+			jg tri
+			cmp al, 19
+			jg dwa
+			cmp al, 9
+			jg odin
+			mov str_out[esi], '0'
+			jmp secondNumber
+
+			tri :
+			mov str_out[esi], '3'
+			sub al, 30
+			jmp secondNumber
+
+			dwa :
+			mov str_out[esi], '2'
+			sub al, 20
+			jmp secondNumber
+
+			odin :
+			mov str_out[esi], '1'
+			sub al, 10
+
+			secondNumber :
+			inc esi
+			add al, 48
+			jmp writeSymbol
+
+
+			writeSymbol:
+			mov str_out[esi], al
+			inc esi
+			loop traverse;
+
+			; mov str_out[esi], 0
+	}	
+	for (int i = 0; i < (N * 2 + 1); i++) {
+		cout << str_out[i];
+	}
+
+	//cout << str_out;
+	return 0;
+}
