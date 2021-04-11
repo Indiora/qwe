@@ -14,7 +14,7 @@ struct Edge {
 
 // формирует список смежности вершин
 void make_list(std::map<char, std::vector<std::pair<char, double >>>& nodes, std::vector<Edge>& edge_mass) {
-	char top1;
+    char top1;
 	char top2;
 	double length;
 	for (auto& i: edge_mass) {
@@ -136,8 +136,8 @@ void AStar(std::map<char, std::vector<std::pair<char, double >>>& nodes, char to
 
 // считывает ввод пользователя
 void user_input(std::map<char, std::vector<std::pair<char, double >>>& nodes) {
+    Edge elem;
     std::vector<Edge> edge_mass;
-	Edge elem;
 	char top1;
 	char top2;
 	top1 = ' ';
